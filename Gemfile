@@ -34,6 +34,7 @@ gem 'webpacker', '~> 4.2', '>= 4.2.2'
 group :development, :test do
   gem 'bullet', '~> 6.0.2'
   gem 'factory_bot_rails', '~> 5.1', '>= 5.1.1'
+  gem 'faker', '~> 2.7'
   gem 'pry-byebug', '~> 3.7', platform: :mri
   gem 'rspec-rails', '~> 3.9'
 end
@@ -53,7 +54,6 @@ group :development do
 end
 
 group :test do
-  gem 'faker', '~> 2.7'
   gem 'shoulda-matchers', '~> 4.1', '>= 4.1.2'
   gem 'simplecov', '~> 0.13.0', require: false
   gem 'webmock', '~> 3.7', '>= 3.7.6'
