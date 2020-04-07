@@ -39,6 +39,9 @@ class User < ApplicationRecord
 
   validates :uid, uniqueness: { scope: :provider }
 
+  has_many :user_roles, dependent: :destroy
+  has_many :roles, through: :user_roles
+
   before_validation :init_uid
 
   def full_name
