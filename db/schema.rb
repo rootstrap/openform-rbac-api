@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_06_150159) do
+ActiveRecord::Schema.define(version: 2020_04_08_143404) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,21 @@ ActiveRecord::Schema.define(version: 2020_04_06_150159) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
+  create_table "permissions", force: :cascade do |t|
+    t.integer "access_type", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "role_permissions", force: :cascade do |t|
+    t.bigint "role_id"
+    t.bigint "permission_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["permission_id"], name: "index_role_permissions_on_permission_id"
+    t.index ["role_id"], name: "index_role_permissions_on_role_id"
+  end
+
   create_table "roles", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -77,6 +92,7 @@ ActiveRecord::Schema.define(version: 2020_04_06_150159) do
   create_table "settings", force: :cascade do |t|
     t.string "key", null: false
     t.string "value"
+    t.index ["key"], name: "index_settings_on_key", unique: true
   end
 
   create_table "user_roles", force: :cascade do |t|
