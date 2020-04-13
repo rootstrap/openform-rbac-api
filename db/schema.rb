@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_08_143404) do
+ActiveRecord::Schema.define(version: 2020_04_13_115813) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,17 @@ ActiveRecord::Schema.define(version: 2020_04_08_143404) do
     t.integer "access_type", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "resource_id", null: false
+    t.index ["access_type", "resource_id"], name: "index_permissions_on_access_type_and_resource_id", unique: true
+    t.index ["resource_id"], name: "index_permissions_on_resource_id"
+  end
+
+  create_table "resources", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "resource_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["name", "resource_id"], name: "index_resources_on_name_and_resource_id", unique: true
   end
 
   create_table "role_permissions", force: :cascade do |t|
