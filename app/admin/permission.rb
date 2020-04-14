@@ -1,12 +1,9 @@
-ActiveAdmin.register Role do
-  permit_params :name, permission_ids: []
-
-  decorate_with RoleDecorator
+ActiveAdmin.register Permission do
+  permit_params :access_type
 
   form do |f|
     f.inputs 'Details' do
-      f.input :name
-      f.input :permissions, as: :check_boxes
+      f.input :access_type
     end
 
     actions
@@ -16,22 +13,21 @@ ActiveAdmin.register Role do
     selectable_column
     id_column
 
-    column :name
+    column :access_type
     column :created_at
 
     actions
   end
 
   filter :id
-  filter :name
+  filter :access_type
 
   show do
     attributes_table do
       row :id
-      row :name
+      row :access_type
       row :created_at
       row :updated_at
-      row :permissions, &:permissions_string
     end
   end
 end
