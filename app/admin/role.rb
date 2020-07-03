@@ -7,6 +7,7 @@ ActiveAdmin.register Role do
     f.inputs 'Details' do
       f.input :name
       f.input :permissions, as: :check_boxes
+      f.input :resources
     end
 
     actions
