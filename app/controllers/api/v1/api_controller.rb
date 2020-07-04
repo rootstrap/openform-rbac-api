@@ -5,6 +5,7 @@ module Api
       include DeviseTokenAuth::Concerns::SetUserByToken
 
       before_action :authenticate_user!, except: :status
+      skip_after_action :verify_authorized, only: :status
 
       layout false
       respond_to :json
@@ -15,6 +16,7 @@ module Api
       rescue_from ActionController::RoutingError,      with: :render_not_found
       rescue_from AbstractController::ActionNotFound,  with: :render_not_found
       rescue_from ActionController::ParameterMissing,  with: :render_parameter_missing
+      rescue_from Pundit::NotAuthorizedError,          with: :render_not_authorized
 
       def status
         render json: { online: true }
@@ -48,6 +50,12 @@ module Api
       def render_parameter_missing(exception)
         logger.info(exception) # for logging
         render json: { error: I18n.t('api.errors.missing_param') }, status: :unprocessable_entity
+      end
+
+      def render_not_authorized(exception)
+        logger.info(exception)
+        render json: { error: I18n.t('api.errors.unauthorized_action_on_resource') },
+               status: :forbidden
       end
     end
   end
