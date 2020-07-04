@@ -15,6 +15,7 @@ Rails.application.routes.draw do
         resource :user, only: %i[update show] do
           get :profile
         end
+        resource :resource, only: %i[index show create update destroy]
       end
       resources :settings, only: [] do
         get :must_update, on: :collection
