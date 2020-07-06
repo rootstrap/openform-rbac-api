@@ -8,4 +8,6 @@ class Permission < ApplicationRecord
     action_edit: 2,
     action_remove: 3
   }
+
+  delegate :to_s, to: :access_type
 end

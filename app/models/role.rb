@@ -6,4 +6,7 @@ class Role < ApplicationRecord
 
   has_many :role_permissions, dependent: :destroy
   has_many :permissions, through: :role_permissions
+
+  has_many :role_resources, dependent: :destroy
+  has_many :resources, through: :role_resources
 end
