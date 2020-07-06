@@ -26,7 +26,7 @@ class ResourcePolicy < ApplicationPolicy
       resource_type: @record.resource_type,
       resource_id: @record.resource_id,
       user_id: user.id,
-      action: action
+      action: Permission.access_types[action.first.access_type.to_sym]
     }
     Resource.allowed_resources(params).exists?
   end
