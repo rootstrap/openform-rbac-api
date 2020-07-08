@@ -8,6 +8,7 @@ class Resource < ApplicationRecord
   scope :matching, lambda { |params|
                      where(resource_type: params[:resource_type])
                        .where(resource_id: [nil, params[:resource_id]])
+                       .order(resource_id: :asc)
                    }
 
   # example_params = {
@@ -20,7 +21,6 @@ class Resource < ApplicationRecord
     matching({ resource_type: params[:resource_type], resource_id: params[:resource_id] })
       .includes(roles: %i[permissions users])
       .where(users: { id: params[:user_id] }, permissions: { access_type: params[:action] })
-      .references(:users, :roles, :permissions)
   }
 
   def to_s

@@ -36,7 +36,7 @@ describe ResourcePolicy do
     end
 
     permissions :create?, :update?, :destroy? do
-      it do
+      it 'to form modification/creation actions' do
         user_form_viewer.reload
         expect(subject).not_to permit(user_form_viewer, form_resource)
       end

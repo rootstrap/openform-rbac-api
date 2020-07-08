@@ -1,23 +1,21 @@
 module Api
   module V1
     class ResourcesController < Api::V1::ApiController
+      before_action :authorize_requested_resource
+
       def index
-        authorize requested_resource
         head :ok
       end
 
       def show
-        authorize requested_resource
         head :ok
       end
 
       def update
-        authorize requested_resource
         head :ok
       end
 
       def destroy
-        authorize requested_resource
         head :ok
       end
 
@@ -30,7 +28,11 @@ module Api
       def requested_resource
         @requested_resource ||= Resource.matching(resource_id: resource_params[:resource_id],
                                                   resource_type: resource_params[:resource_type])
-                                        .first
+                                        .take!
+      end
+
+      def authorize_requested_resource
+        authorize requested_resource
       end
     end
   end
