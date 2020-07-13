@@ -8,7 +8,14 @@ require 'spec_helper'
 require 'rspec/rails'
 require 'simplecov'
 
-SimpleCov.start
+SimpleCov.start 'rails' do
+  add_group 'Forms', 'app/forms'
+  add_group 'Policies', 'app/policies'
+  add_group 'Presenters', 'app/presenters'
+  add_filter 'app/admin'
+  add_filter 'config'
+  add_filter 'spec'
+end
 
 ActiveRecord::Migration.maintain_test_schema!
 WebMock.disable_net_connect!(allow_localhost: true)

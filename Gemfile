@@ -19,6 +19,7 @@ gem 'oj', '~> 3.9', '>= 3.9.2'
 gem 'pg', '~> 1.1', '>= 1.1.4'
 gem 'pry-rails', '~> 0.3.9'
 gem 'puma', '~> 4.3'
+gem 'pundit', '~> 2.1'
 gem 'rack-cors', '~> 1.0', '>= 1.0.6'
 gem 'sendgrid', '~> 1.2.4'
 gem 'sprockets', '~> 3.7.2'
@@ -43,6 +44,7 @@ group :development do
   gem 'annotate', '~> 3.0', '>= 3.0.3'
   gem 'better_errors', '~> 2.5', '>= 2.5.1'
   gem 'brakeman', '~> 4.7', '>= 4.7.1'
+  gem 'i18n-tasks', '~> 0.9.30'
   gem 'letter_opener', '~> 1.7'
   gem 'listen', '~> 3.2'
   gem 'rails_best_practices', '~> 1.19.4'
@@ -50,7 +52,6 @@ group :development do
   gem 'rubocop-rails', '~> 2.3', '>= 2.3.2'
   gem 'spring', '~> 2.1'
   gem 'spring-watcher-listen', '~> 2.0.1'
-  gem 'i18n-tasks', '~> 0.9.30'
 end
 
 group :test do
