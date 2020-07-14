@@ -49,7 +49,8 @@ group :development do
   gem 'listen', '~> 3.2'
   gem 'rails_best_practices', '~> 1.19.4'
   gem 'reek', '~> 5.5'
-  gem 'rubocop-rails', '~> 2.3', '>= 2.3.2'
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rootstrap', '~> 0.1.0'
   gem 'spring', '~> 2.1'
   gem 'spring-watcher-listen', '~> 2.0.1'
 end
