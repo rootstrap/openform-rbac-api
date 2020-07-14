@@ -34,6 +34,10 @@ module Api
       def authorize_requested_resource
         authorize requested_resource
       end
+
+      def pundit_user
+        current_user
+      end
     end
   end
 end

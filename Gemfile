@@ -10,7 +10,6 @@ gem 'aws-sdk-s3', '~> 1', require: false
 gem 'bootsnap', '~> 1.4', '>= 1.4.5'
 gem 'delayed_job_active_record', '~> 4.1', '>= 4.1.4'
 gem 'devise', '~> 4.7.1'
-gem 'devise_token_auth', '~> 1.1', '>= 1.1.3'
 gem 'draper', '~> 3.1'
 gem 'figaro', '~> 1.1.1'
 gem 'haml-rails', '~> 2.0', '>= 2.0.1'
