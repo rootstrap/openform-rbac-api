@@ -32,6 +32,6 @@
 
 FactoryBot.define do
   factory :user do
-    external_id { Faker::Number.unique.between(1, 900).round }
+    external_id { Faker::Number.unique.between(from: 1, to: 900).round }
   end
 end
