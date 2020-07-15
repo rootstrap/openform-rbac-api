@@ -1,2 +1,1 @@
-json.id          user.id
-json.external_id user.external_id
+json.extract! @user, :id, :external_id

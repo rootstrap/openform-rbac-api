@@ -4,7 +4,7 @@ module Api
       before_action :auth_user
 
       def create
-        @user = User.create! user_params
+        @user = User.create!(user_params)
         render :show
       end
 
