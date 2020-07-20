@@ -1,102 +1,70 @@
 describe 'POST api/v1/users/', type: :request do
-  let(:user)            { User.last }
-  let(:failed_response) { 422 }
-
-  describe 'POST create' do
-    let(:username)              { 'test' }
-    let(:email)                 { 'test@test.com' }
-    let(:password)              { '12345678' }
-    let(:password_confirmation) { '12345678' }
-    let(:first_name)            { 'Johnny' }
-    let(:last_name)             { 'Perez' }
-
-    let(:params) do
-      {
-        user: {
-          username: username,
-          email: email,
-          password: password,
-          password_confirmation: password_confirmation,
-          first_name: first_name,
-          last_name: last_name
-        }
+  let(:user)          { create(:user) }
+  let(:user_resource) { create(:resource, :user) }
+  let(:external_id)   { user.external_id + 1 }
+  let(:headers)       { auth_headers }
+  let!(:params) do
+    {
+      user: {
+        external_id: external_id
       }
+    }
+  end
+  subject { post api_v1_users_path, params: params, headers: headers, as: :json }
+  before do
+    Permission.access_types.keys.each { |key| Permission.find_or_create_by(access_type: key) }
+  end
+
+  context 'when user has user creation permissions' do
+    let!(:admin_user_role) { create(:role, :admin, resources: [user_resource], users: [user]) }
+
+    before do
+      user.reload
     end
 
-    it 'returns a successful response' do
-      post user_registration_path, params: params, as: :json
-
-      expect(response).to have_http_status(:success)
-    end
-
-    it 'creates the user' do
-      expect {
-        post user_registration_path, params: params, as: :json
-      }.to change(User, :count).by(1)
-    end
-
-    it 'returns the user' do
-      post user_registration_path, params: params, as: :json
-
-      expect(json[:user][:id]).to eq(user.id)
-      expect(json[:user][:email]).to eq(user.email)
-      expect(json[:user][:username]).to eq(user.username)
-      expect(json[:user][:uid]).to eq(user.uid)
-      expect(json[:user][:provider]).to eq('email')
-      expect(json[:user][:first_name]).to eq(user.first_name)
-      expect(json[:user][:last_name]).to eq(user.last_name)
-    end
-
-    context 'when the email is not correct' do
-      let(:email) { 'invalid_email' }
+    describe 'with repeated external_id' do
+      let!(:external_id) { user.external_id }
 
       it 'does not create a user' do
-        expect {
-          post user_registration_path, params: params, as: :json
-        }.not_to change { User.count }
+        expect { subject }.not_to(change { User.count })
       end
 
-      it 'does not return a successful response' do
-        post user_registration_path, params: params, as: :json
-
-        expect(response.status).to eq(failed_response)
+      it 'returns bad request status' do
+        subject
+        expect(response).to have_http_status(:bad_request)
       end
     end
 
-    context 'when the password is incorrect' do
-      let(:password)              { 'short' }
-      let(:password_confirmation) { 'short' }
-      let(:new_user)              { User.find_by(email: email) }
-
-      it 'does not create a user' do
-        post user_registration_path, params: params, as: :json
-
-        expect(new_user).to be_nil
+    describe 'with valid external_id' do
+      it 'resturns a successfull response' do
+        subject
+        expect(response).to have_http_status(:success)
       end
 
-      it 'does not return a successful response' do
-        post user_registration_path, params: params, as: :json
+      it 'creates the user' do
+        expect { subject }.to change { User.count }.from(1).to(2)
+      end
 
-        expect(response.status).to eq(failed_response)
+      it 'returns the created user' do
+        subject
+        expect(json[:user][:external_id]).to eq(external_id)
       end
     end
+  end
 
-    context 'when passwords don\'t match' do
-      let(:password)              { 'shouldmatch' }
-      let(:password_confirmation) { 'dontmatch' }
-      let(:new_user)              { User.find_by(email: email) }
+  context 'when user doesn\'t have user creation permissions' do
+    it 'resturns a forbidden response' do
+      subject
+      expect(response).to have_http_status(:forbidden)
+    end
 
-      it 'does not create a user' do
-        post user_registration_path, params: params, as: :json
+    it 'does not create the user' do
+      expect { subject }.not_to change { User.count }
+    end
 
-        expect(new_user).to be_nil
-      end
-
-      it 'does not return a successful response' do
-        post user_registration_path, params: params, as: :json
-
-        expect(response.status).to eq(failed_response)
-      end
+    it 'returns an error message' do
+      subject
+      expect(json[:error]).to eq('The action on the requested resource is not authorized')
     end
   end
 end

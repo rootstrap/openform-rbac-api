@@ -10,7 +10,6 @@ gem 'aws-sdk-s3', '~> 1', require: false
 gem 'bootsnap', '~> 1.4', '>= 1.4.5'
 gem 'delayed_job_active_record', '~> 4.1', '>= 4.1.4'
 gem 'devise', '~> 4.7.1'
-gem 'devise_token_auth', '~> 1.1', '>= 1.1.3'
 gem 'draper', '~> 3.1'
 gem 'figaro', '~> 1.1.1'
 gem 'haml-rails', '~> 2.0', '>= 2.0.1'
@@ -49,7 +48,8 @@ group :development do
   gem 'listen', '~> 3.2'
   gem 'rails_best_practices', '~> 1.19.4'
   gem 'reek', '~> 5.5'
-  gem 'rubocop-rails', '~> 2.3', '>= 2.3.2'
+  gem 'rubocop-rails', require: false
+  gem 'rubocop-rootstrap', '~> 0.1.0'
   gem 'spring', '~> 2.1'
   gem 'spring-watcher-listen', '~> 2.0.1'
 end

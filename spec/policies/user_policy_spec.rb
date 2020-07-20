@@ -1,16 +1,28 @@
 describe UserPolicy do
   subject { described_class }
+  let!(:user) { create(:user) }
+  let!(:resource) { create(:resource, :user) }
 
-  permissions :update?, :profile? do
-    let(:user1) { create(:user) }
-    let(:user2) { create(:user) }
+  before do
+    Permission.access_types.keys.each { |key| Permission.find_or_create_by(access_type: key) }
+  end
 
-    it 'denies access if user is not the same' do
-      expect(subject).not_to permit(user1, user2)
+  describe 'when user has permissions to create User' do
+    let!(:role) { create(:role, :admin, resources: [resource], users: [user]) }
+    permissions :create? do
+      it 'can create a user' do
+        user.reload
+        expect(subject).to permit(user, resource)
+      end
     end
+  end
 
-    it 'allow access if user is the same' do
-      expect(subject).to permit(user1, user1)
+  describe 'when user does not have permissions to create Users' do
+    permissions :create? do
+      it 'can create a user' do
+        user.reload
+        expect(subject).not_to permit(user, resource)
+      end
     end
   end
 end

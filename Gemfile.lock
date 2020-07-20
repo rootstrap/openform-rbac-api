@@ -138,10 +138,6 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
-    devise_token_auth (1.1.3)
-      bcrypt (~> 3.0)
-      devise (> 3.5.2, < 5)
-      rails (>= 4.2.0, < 6.1)
     diff-lcs (1.3)
     docile (1.1.5)
     draper (3.1.0)
@@ -369,6 +365,8 @@ GEM
       activesupport
       rack (>= 1.1)
       rubocop (>= 0.72.0)
+    rubocop-rootstrap (0.1.0)
+      rubocop (~> 0.72)
     ruby-progressbar (1.10.1)
     ruby_parser (3.14.2)
       sexp_processor (~> 4.9)
@@ -448,7 +446,6 @@ DEPENDENCIES
   bullet (~> 6.0.2)
   delayed_job_active_record (~> 4.1, >= 4.1.4)
   devise (~> 4.7.1)
-  devise_token_auth (~> 1.1, >= 1.1.3)
   draper (~> 3.1)
   factory_bot_rails (~> 5.1, >= 5.1.1)
   faker (~> 2.7)
@@ -469,7 +466,8 @@ DEPENDENCIES
   rails_best_practices (~> 1.19.4)
   reek (~> 5.5)
   rspec-rails (~> 3.9)
-  rubocop-rails (~> 2.3, >= 2.3.2)
+  rubocop-rails
+  rubocop-rootstrap (~> 0.1.0)
   sendgrid (~> 1.2.4)
   shoulda-matchers (~> 4.1, >= 4.1.2)
   simplecov (~> 0.13.0)

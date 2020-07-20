@@ -2,9 +2,8 @@ module Api
   module V1
     class ApiController < ApplicationController
       include Api::Concerns::ActAsApiRequest
-      include DeviseTokenAuth::Concerns::SetUserByToken
 
-      before_action :authenticate_user!, except: :status
+      before_action :check_user_id_header
       skip_after_action :verify_authorized, only: :status
 
       layout false
@@ -23,6 +22,16 @@ module Api
       end
 
       private
+
+      def current_user
+        @current_user = User.find_by external_id: request.headers[:userId]
+      end
+
+      def check_user_id_header
+        return if request.headers[:userId].present?
+
+        render_parameter_missing(Exception.new('missing user_id header'))
+      end
 
       def render_error(exception)
         raise exception if Rails.env.test?

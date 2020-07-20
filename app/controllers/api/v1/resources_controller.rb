@@ -3,6 +3,10 @@ module Api
     class ResourcesController < Api::V1::ApiController
       before_action :authorize_requested_resource
 
+      def create
+        head :ok
+      end
+
       def index
         head :ok
       end
@@ -33,6 +37,10 @@ module Api
 
       def authorize_requested_resource
         authorize requested_resource
+      end
+
+      def pundit_user
+        current_user
       end
     end
   end
