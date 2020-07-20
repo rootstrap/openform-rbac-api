@@ -3,6 +3,10 @@ module Api
     class ResourcesController < Api::V1::ApiController
       before_action :authorize_requested_resource
 
+      def create
+        head :ok
+      end
+
       def index
         head :ok
       end
