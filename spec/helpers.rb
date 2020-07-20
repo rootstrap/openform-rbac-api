@@ -7,6 +7,6 @@ module Helpers
   end
 
   def auth_headers
-    user.create_new_auth_token
+    { userId: user.external_id }
   end
 end
