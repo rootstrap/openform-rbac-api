@@ -29,14 +29,10 @@ module Api
         params.require(:resource).permit(:resource_id, :resource_type)
       end
 
-      def requested_resource
-        @requested_resource ||= Resource.matching(resource_id: resource_params[:resource_id],
-                                                  resource_type: resource_params[:resource_type])
-                                        .take!
-      end
-
       def authorize_requested_resource
-        authorize requested_resource
+        authorize ResourceService.new(resource_params[:resource_type],
+                                      resource_params[:resource_id])
+                                 .resource
       end
 
       def pundit_user

@@ -14,6 +14,6 @@ class CreateResources < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    add_index :resources, [:resource_id, :resource_type], unique: true
+    add_index :resources, %i[resource_id resource_type], unique: true
   end
 end
