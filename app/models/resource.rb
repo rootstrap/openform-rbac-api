@@ -19,6 +19,7 @@ class Resource < ApplicationRecord
   validates :resource_type, presence: true,
                             uniqueness: { scope: :resource_id, case_sensitive: false }
 
+  scope :filter_by_type, ->(param) { where(resource_type: param) }
   scope :matching, lambda { |params|
                      where(resource_type: params[:resource_type])
                        .where(resource_id: [nil, params[:resource_id]])
