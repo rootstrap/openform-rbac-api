@@ -13,7 +13,7 @@ describe 'DELETE api/v1/resources/', type: :request do
     let(:headers) { auth_headers }
 
     describe 'when user has permission' do
-      let!(:admin_role_users) { create(:role, :admin, resources: [user_resource], users: [user]) }
+      let!(:admin_role_users) { create(:role, :admin, resource: user_resource, user: user) }
 
       it 'returns success status code' do
         subject

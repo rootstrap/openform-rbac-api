@@ -1,9 +1,9 @@
 describe 'POST api/v1/users/', type: :request do
-  let(:user)          { create(:user) }
-  let(:user_resource) { create(:resource, :user) }
-  let(:external_id)   { user.external_id + 1 }
-  let(:headers)       { auth_headers }
-  let!(:params) do
+  let(:user)           { create(:user, resources: []) }
+  let!(:user_resource) { create(:resource, :user) }
+  let(:headers)        { auth_headers }
+  let(:external_id)    { user.external_id + 1 }
+  let(:params)         do
     {
       user: {
         external_id: external_id
@@ -16,8 +16,7 @@ describe 'POST api/v1/users/', type: :request do
   end
 
   context 'when user has user creation permissions' do
-    let!(:admin_user_role) { create(:role, :admin, resources: [user_resource], users: [user]) }
-
+    let!(:admin_user_role) { create(:role, :admin, resource: user_resource, user: user) }
     before do
       user.reload
     end
@@ -59,7 +58,8 @@ describe 'POST api/v1/users/', type: :request do
     end
 
     it 'does not create the user' do
-      expect { subject }.not_to change { User.count }
+      user
+      expect { subject }.not_to(change { User.count })
     end
 
     it 'returns an error message' do

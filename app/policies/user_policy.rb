@@ -1,17 +1,8 @@
 class UserPolicy < ApplicationPolicy
   def create?
-    allowed_resource?(Permission.action_create)
-  end
+    resource = Resource.find_or_create_by!(resource_type: User.name, resource_id: nil)
+    action = Permission.access_types[:action_create]
 
-  private
-
-  def allowed_resource?(action)
-    params = {
-      resource_type: 'User',
-      resource_id: nil,
-      user_id: user.id,
-      action: Permission.access_types[action.first.access_type.to_sym]
-    }
-    Resource.allowed_resources(params).exists?
+    AllowedResourcesQuery.new(user, user.resources).action_on_resource(action, resource).any?
   end
 end

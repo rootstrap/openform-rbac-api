@@ -23,7 +23,8 @@ detectors:
     allow_calls: []
   FeatureEnvy:
     enabled: true
-    exclude: []
+    exclude:
+      - AllowedResourcesQuery#action_on_resource
   InstanceVariableAssumption:
     enabled: false
   IrresponsibleModule:

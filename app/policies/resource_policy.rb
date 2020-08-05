@@ -1,33 +1,29 @@
 class ResourcePolicy < ApplicationPolicy
   def index?
-    allowed_resource?(Permission.action_view)
+    show?
   end
 
   def show?
-    allowed_resource?(Permission.action_view)
+    allowed_resource?(Permission.access_types[:action_view])
   end
 
   def create?
-    allowed_resource?(Permission.action_create)
+    allowed_resource?(Permission.access_types[:action_create])
   end
 
   def update?
-    allowed_resource?(Permission.action_edit)
+    allowed_resource?(Permission.access_types[:action_edit])
   end
 
   def destroy?
-    allowed_resource?(Permission.action_remove)
+    allowed_resource?(Permission.access_types[:action_remove])
   end
 
   private
 
   def allowed_resource?(action)
-    params = {
-      resource_type: @record.resource_type,
-      resource_id: @record.resource_id,
-      user_id: user.id,
-      action: Permission.access_types[action.first.access_type.to_sym]
-    }
-    Resource.allowed_resources(params).exists?
+    return false unless user
+
+    AllowedResourcesQuery.new(user, user.resources).action_on_resource(action, record).any?
   end
 end

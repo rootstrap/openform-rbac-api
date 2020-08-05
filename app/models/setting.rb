@@ -2,9 +2,13 @@
 #
 # Table name: settings
 #
-#  id    :integer          not null, primary key
-#  key   :string
+#  id    :bigint           not null, primary key
+#  key   :string           not null
 #  value :string
+#
+# Indexes
+#
+#  index_settings_on_key  (key) UNIQUE
 #
 
 class Setting < ApplicationRecord
