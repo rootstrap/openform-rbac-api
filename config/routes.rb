@@ -6,9 +6,9 @@ Rails.application.routes.draw do
     namespace :v1, defaults: { format: :json } do
       get :status, to: 'api#status'
       resources :users, only: :create
-      resource :user do
+      resource :user, only: [] do
         scope module: 'users' do
-          resources :resources, only: :index
+          resources :roles, only: :index
         end
       end
 

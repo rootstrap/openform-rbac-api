@@ -10,7 +10,7 @@ RSpec.describe RoleDecorator do
       let(:permissions) { create_list(:permission, 4, roles: [role]) }
 
       it 'returns the permissions names in a string' do
-        permissions_string = permissions.map(&:access_type).uniq.join(', ')
+        permissions_string = permissions.map(&:access_type).uniq.join(',')
 
         expect(subject).to eq(permissions_string)
       end
