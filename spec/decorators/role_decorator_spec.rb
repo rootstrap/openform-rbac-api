@@ -7,10 +7,10 @@ RSpec.describe RoleDecorator do
     subject { role.permissions_string }
 
     context 'when the role has permissions' do
-      let(:permissions) { create_list(:permission, 3, roles: [role]) }
+      let(:permissions) { create_list(:permission, 4, roles: [role]) }
 
       it 'returns the permissions names in a string' do
-        permissions_string = permissions.map(&:access_type).join(', ')
+        permissions_string = permissions.map(&:access_type).uniq.join(', ')
 
         expect(subject).to eq(permissions_string)
       end

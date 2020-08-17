@@ -1,6 +1,20 @@
+# == Schema Information
+#
+# Table name: resources
+#
+#  id            :bigint           not null, primary key
+#  resource_id   :integer
+#  resource_type :string           not null
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#
+# Indexes
+#
+#  index_resources_on_resource_id_and_resource_type  (resource_id,resource_type) UNIQUE
+#
 class Resource < ApplicationRecord
-  has_many :role_resources, dependent: :destroy
-  has_many :roles, through: :role_resources
+  has_many :roles, dependent: :destroy
+  has_many :users, through: :roles
 
   validates :resource_type, presence: true,
                             uniqueness: { scope: :resource_id, case_sensitive: false }
@@ -10,18 +24,6 @@ class Resource < ApplicationRecord
                        .where(resource_id: [nil, params[:resource_id]])
                        .order(resource_id: :asc)
                    }
-
-  # example_params = {
-  #   resource_type: 'Form',
-  #   resource_id: 4,
-  #   user_id: 1,
-  #   action: Permission.action_view
-  # }
-  scope :allowed_resources, lambda { |params|
-    matching({ resource_type: params[:resource_type], resource_id: params[:resource_id] })
-      .includes(roles: %i[permissions users])
-      .where(users: { id: params[:user_id] }, permissions: { access_type: params[:action] })
-  }
 
   def to_s
     return resource_type.pluralize if resource_id.nil?

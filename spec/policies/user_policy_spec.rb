@@ -8,7 +8,7 @@ describe UserPolicy do
   end
 
   describe 'when user has permissions to create User' do
-    let!(:role) { create(:role, :admin, resources: [resource], users: [user]) }
+    let!(:role) { create(:role, :admin, resource: resource, user: user) }
     permissions :create? do
       it 'can create a user' do
         user.reload
