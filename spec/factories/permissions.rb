@@ -14,6 +14,6 @@
 FactoryBot.define do
   factory :permission do
     access_type { Permission.access_types.values.sample }
-    initialize_with { Permission.find_or_create_by!(access_type: access_type) }
+    initialize_with { Permission.find_or_initialize_by(access_type: access_type) }
   end
 end

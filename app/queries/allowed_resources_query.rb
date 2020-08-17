@@ -7,14 +7,15 @@ class AllowedResourcesQuery
   end
 
   def action_on(actions)
-    relation.joins(roles: %i[permissions user]).where(roles: {
-                                                        permissions: {
-                                                          access_type: actions
-                                                        },
-                                                        users: {
-                                                          id: user.id
-                                                        }
-                                                      })
+    relation.joins(roles: %i[permissions user])
+            .where(roles: {
+                     permissions: {
+                       access_type: actions
+                     },
+                     users: {
+                       id: user.id
+                     }
+                   })
   end
 
   def action_on_resource(actions, resource)
