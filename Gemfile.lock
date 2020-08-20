@@ -341,6 +341,7 @@ GEM
     rspec-expectations (3.9.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
+    rspec-json_expectations (2.2.0)
     rspec-mocks (3.9.1)
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
@@ -465,6 +466,7 @@ DEPENDENCIES
   rails (~> 6.0.0)
   rails_best_practices (~> 1.19.4)
   reek (~> 5.5)
+  rspec-json_expectations (~> 2.2)
   rspec-rails (~> 3.9)
   rubocop-rails
   rubocop-rootstrap (~> 0.1.0)

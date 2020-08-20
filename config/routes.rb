@@ -6,6 +6,12 @@ Rails.application.routes.draw do
     namespace :v1, defaults: { format: :json } do
       get :status, to: 'api#status'
       resources :users, only: :create
+      resource :user, only: [] do
+        scope module: 'users' do
+          resources :roles, only: :index
+        end
+      end
+
       resource :resource, except: %i[new edit]
       resources :settings, only: [] do
         get :must_update, on: :collection
