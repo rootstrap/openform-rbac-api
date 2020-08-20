@@ -19,10 +19,10 @@ class Permission < ApplicationRecord
     action_remove: 3
   }
 
-  validates :access_type, uniqueness: true
-
   has_many :role_permissions, dependent: :destroy
   has_many :roles, through: :role_permissions
+
+  validates :access_type, uniqueness: true
 
   delegate :to_s, to: :access_type
 end
