@@ -21,9 +21,10 @@ class ResourcePolicy < ApplicationPolicy
 
   private
 
-  def allowed_resource?(action)
+  def allowed_resource?(actions)
     return false unless user
 
-    AllowedResourcesQuery.new(user, user.resources).action_on_resource(action, record).any?
+    ResourceService.new(record.resource_type, record.resource_id)
+                   .action_on_resource?(user, actions)
   end
 end
