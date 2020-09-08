@@ -1,29 +1,26 @@
 class AllowedResourcesQuery
   attr_reader :user, :relation
 
-  def initialize(user, relation)
+  def initialize(user)
     @user = user
-    @relation = relation
   end
+
+  def allowed_resources(actions, resource_type = nil)
+    resources = Resource.includes(:role).where(
+      roles: action_on(actions)
+    )
+
+    resource_type.present? ? resources.where(resource_type: resource_type) : resources
+  end
+
+  private
 
   def action_on(actions)
-    relation.joins(roles: %i[permissions user])
-            .where(roles: {
-                     permissions: {
-                       access_type: actions
-                     },
-                     users: {
-                       id: user.id
-                     }
-                   })
-  end
-
-  def action_on_resource(actions, resource)
-    action_on(actions).where(
-      resources: {
-        resource_type: resource.resource_type,
-        resource_id: [resource.resource_id, nil]
-      }
-    )
+    Role.joins(%i[permissions user]).where(permissions: {
+                                             access_type: actions
+                                           },
+                                           users: {
+                                             id: user.id
+                                           })
   end
 end
