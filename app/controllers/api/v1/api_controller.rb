@@ -3,7 +3,7 @@ module Api
     class ApiController < ApplicationController
       include Api::Concerns::ActAsApiRequest
 
-      before_action :check_user_id_header
+      before_action :check_auth_header
       skip_after_action :verify_authorized, only: :status
 
       layout false
@@ -24,13 +24,37 @@ module Api
       private
 
       def current_user
-        @current_user = User.find_by external_id: request.headers[:userId]
+        @current_user ||= if user_id_passed?
+                            User.find_by(external_id: user_id)
+                          elsif api_key_passed?
+                            AdminUser.find_by(api_key: api_key)
+                          end
       end
 
-      def check_user_id_header
-        return if request.headers[:userId].present?
+      def user_id
+        request.headers[:userId]
+      end
 
-        render_parameter_missing(Exception.new('missing user_id header'))
+      def user_id_passed?
+        user_id.present?
+      end
+
+      def api_key
+        request.headers[:apiKey]
+      end
+
+      def api_key_passed?
+        api_key.present?
+      end
+
+      def check_auth_header
+        return if user_id_passed? || api_key_passed?
+
+        if !user_id_passed? && !api_key_passed?
+          render_parameter_missing(Exception.new('missing user_id header'))
+        elsif !api_key_passed?
+          render_parameter_missing(Exception.new('missing api_key header'))
+        end
       end
 
       def render_error(exception)

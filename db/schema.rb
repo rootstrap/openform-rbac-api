@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_05_131411) do
+ActiveRecord::Schema.define(version: 2020_09_08_152802) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
@@ -22,7 +22,7 @@ ActiveRecord::Schema.define(version: 2020_08_05_131411) do
     t.bigint 'blob_id', null: false
     t.datetime 'created_at', null: false
     t.index ['blob_id'], name: 'index_active_storage_attachments_on_blob_id'
-    t.index %w[record_type record_id name blob_id], name: 'index_active_storage_attachments_uniqueness', unique: true
+    t.index ['record_type', 'record_id', 'name', 'blob_id'], name: 'index_active_storage_attachments_uniqueness', unique: true
   end
 
   create_table 'active_storage_blobs', force: :cascade do |t|
@@ -49,6 +49,7 @@ ActiveRecord::Schema.define(version: 2020_08_05_131411) do
     t.inet 'last_sign_in_ip'
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
+    t.string 'api_key'
     t.index ['email'], name: 'index_admin_users_on_email', unique: true
     t.index ['reset_password_token'], name: 'index_admin_users_on_reset_password_token', unique: true
   end
@@ -65,7 +66,7 @@ ActiveRecord::Schema.define(version: 2020_08_05_131411) do
     t.string 'queue'
     t.datetime 'created_at'
     t.datetime 'updated_at'
-    t.index %w[priority run_at], name: 'delayed_jobs_priority'
+    t.index ['priority', 'run_at'], name: 'delayed_jobs_priority'
   end
 
   create_table 'permissions', force: :cascade do |t|
@@ -80,7 +81,7 @@ ActiveRecord::Schema.define(version: 2020_08_05_131411) do
     t.string 'resource_type', null: false
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
-    t.index %w[resource_id resource_type], name: 'index_resources_on_resource_id_and_resource_type', unique: true
+    t.index ['resource_id', 'resource_type'], name: 'index_resources_on_resource_id_and_resource_type', unique: true
   end
 
   create_table 'role_permissions', force: :cascade do |t|
