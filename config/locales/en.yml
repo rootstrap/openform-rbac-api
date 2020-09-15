@@ -11,4 +11,5 @@ en:
       missing_param: A required param is missing
       not_found: Couldn't find the record
       server: An error ocurred
+      unauthorized: Unathorized access
       unauthorized_action_on_resource: The action on the requested resource is not authorized

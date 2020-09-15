@@ -24,9 +24,9 @@ module Api
       private
 
       def current_user
-        @current_user ||= if user_id_passed?
+        @current_user ||= if user_id.present?
                             User.find_by(external_id: user_id)
-                          elsif api_key_passed?
+                          elsif api_key.present?
                             AdminUser.find_by(api_key: api_key)
                           end
       end
@@ -35,26 +35,16 @@ module Api
         request.headers[:userId]
       end
 
-      def user_id_passed?
-        user_id.present?
-      end
-
       def api_key
         request.headers[:apiKey]
       end
 
-      def api_key_passed?
-        api_key.present?
+      def auth_headers_passed?
+        api_key.present? || user_id.present?
       end
 
       def check_auth_header
-        return if user_id_passed? || api_key_passed?
-
-        if !user_id_passed? && !api_key_passed?
-          render_parameter_missing(Exception.new('missing user_id header'))
-        elsif !api_key_passed?
-          render_parameter_missing(Exception.new('missing api_key header'))
-        end
+        render_unauthorized(Exception.new('missing auth headers')) unless auth_headers_passed?
       end
 
       def render_error(exception)
@@ -89,6 +79,12 @@ module Api
         logger.info(exception)
         render json: { error: I18n.t('api.errors.unauthorized_action_on_resource') },
                status: :forbidden
+      end
+
+      def render_unauthorized(exception)
+        logger.info(exception)
+        render json: { error: I18n.t('api.errors.unauthorized') },
+               status: :unauthorized
       end
     end
   end
