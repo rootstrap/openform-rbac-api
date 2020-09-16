@@ -1,9 +1,7 @@
 class UserPolicy < ApplicationPolicy
-  def permitted_attributes_for_create
-    [:external_id, roles: %i[id name resource_id resource_type]]
-  end
+  def create?
+    action = Permission.access_types[:action_create]
 
-  def permitted_attributes_for_update
-    [roles: %i[id name resource_id resource_type]]
+    AllowedResourcesQuery.new(user).allowed_resources(action, User.name).any?
   end
 end

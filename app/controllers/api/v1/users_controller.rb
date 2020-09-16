@@ -1,22 +1,16 @@
 module Api
   module V1
-    class UsersController < ApiController
-      helper_method :user
-
+    class UsersController < Api::V1::ApiController
       def create
-        @user = UserService.new.create!(permitted_attributes(User))
-        render :show
-      end
-
-      def update
-        UserService.new(user).update!(permitted_attributes(user))
+        authorize User
+        @user = User.create!(user_params)
         render :show
       end
 
       private
 
-      def user
-        @user ||= User.find_by!(external_id: params[:id])
+      def user_params
+        params.require(:user).permit(:external_id)
       end
     end
   end
