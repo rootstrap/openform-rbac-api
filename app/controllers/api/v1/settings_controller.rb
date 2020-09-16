@@ -1,7 +1,7 @@
 module Api
   module V1
     class SettingsController < Api::V1::ApiController
-      skip_before_action :check_user_id_header
+      skip_before_action :check_auth_header
       skip_after_action :verify_authorized, :verify_policy_scoped
 
       def must_update

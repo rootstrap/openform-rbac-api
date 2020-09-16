@@ -15,6 +15,7 @@
 #  last_sign_in_ip        :inet
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  api_key                :string
 #
 # Indexes
 #
@@ -23,8 +24,16 @@
 #
 
 class AdminUser < ApplicationRecord
+  before_create :generate_key
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable,
          :recoverable, :rememberable, :trackable, :validatable
+
+  private
+
+  def generate_key
+    self.api_key ||= SecureRandom.urlsafe_base64(ENV.fetch('API_KEY_LENGTH') { 20 })
+                                 .tr('lIO0', 'sxyz')
+  end
 end

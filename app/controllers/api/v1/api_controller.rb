@@ -3,7 +3,7 @@ module Api
     class ApiController < ApplicationController
       include Api::Concerns::ActAsApiRequest
 
-      before_action :check_user_id_header
+      before_action :check_auth_header
       skip_after_action :verify_authorized, only: :status
 
       layout false
@@ -24,13 +24,27 @@ module Api
       private
 
       def current_user
-        @current_user = User.find_by external_id: request.headers[:userId]
+        @current_user ||= if user_id.present?
+                            User.find_by(external_id: user_id)
+                          elsif api_key.present?
+                            AdminUser.find_by(api_key: api_key)
+                          end
       end
 
-      def check_user_id_header
-        return if request.headers[:userId].present?
+      def user_id
+        request.headers[:userId]
+      end
 
-        render_parameter_missing(Exception.new('missing user_id header'))
+      def api_key
+        request.headers[:apiKey]
+      end
+
+      def auth_headers_passed?
+        api_key.present? || user_id.present?
+      end
+
+      def check_auth_header
+        render_unauthorized(Exception.new('missing auth headers')) unless auth_headers_passed?
       end
 
       def render_error(exception)
@@ -65,6 +79,12 @@ module Api
         logger.info(exception)
         render json: { error: I18n.t('api.errors.unauthorized_action_on_resource') },
                status: :forbidden
+      end
+
+      def render_unauthorized(exception)
+        logger.info(exception)
+        render json: { error: I18n.t('api.errors.unauthorized') },
+               status: :unauthorized
       end
     end
   end

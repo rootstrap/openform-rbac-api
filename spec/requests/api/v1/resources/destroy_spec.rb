@@ -37,12 +37,12 @@ describe 'DELETE api/v1/resources/', type: :request do
   context 'when auth headers are missing' do
     it 'returns bad request status code' do
       subject
-      expect(response).to have_http_status(:unprocessable_entity)
+      expect(response).to have_http_status(:unauthorized)
     end
 
     it 'returns error message' do
       subject
-      expect(json[:error]).to eq('A required param is missing')
+      expect(json[:error]).to eq('Unathorized access')
     end
   end
 end

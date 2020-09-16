@@ -5,6 +5,7 @@ ActiveAdmin.register AdminUser do
     selectable_column
     id_column
     column :email
+    column :api_key
     column :current_sign_in_at
     column :sign_in_count
     column :created_at
@@ -12,6 +13,7 @@ ActiveAdmin.register AdminUser do
   end
 
   filter :email
+  filter :api_key
   filter :current_sign_in_at
   filter :sign_in_count
   filter :created_at
