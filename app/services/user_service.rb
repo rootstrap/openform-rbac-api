@@ -37,7 +37,7 @@ class UserService
   end
 
   def destroy_roles!
-    user.roles.each(&:destroy!)
+    user.roles.destroy_all
   end
 
   def create_roles!(roles_hash)
