@@ -25,4 +25,7 @@ class Permission < ApplicationRecord
   validates :access_type, uniqueness: true
 
   delegate :to_s, to: :access_type
+
+  scope :admin, -> { where(access_type: access_types.values) }
+  scope :viewer, -> { action_view }
 end
