@@ -25,6 +25,7 @@ detectors:
     enabled: true
     exclude:
       - AllowedResourcesQuery#action_on_resource
+      - UserService#create_roles!
   InstanceVariableAssumption:
     enabled: false
   IrresponsibleModule:
