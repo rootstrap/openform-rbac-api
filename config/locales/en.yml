@@ -8,6 +8,7 @@ en:
   api:
     errors:
       invalid_content_type: Invalid content type header
+      invalid_role_name: Invalid role name
       missing_param: A required param is missing
       not_found: Couldn't find the record
       server: An error ocurred
