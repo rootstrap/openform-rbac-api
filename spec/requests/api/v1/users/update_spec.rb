@@ -1,4 +1,4 @@
-describe 'POST api/v1/users/', type: :request do
+describe 'PUT api/v1/users/:id', type: :request do
   let!(:user)            { create(:user, resources: []) }
   let!(:user2)           { create(:user, resources: []) }
   let!(:user_resource)   { create(:resource, :user) }
