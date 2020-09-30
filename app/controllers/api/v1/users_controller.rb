@@ -13,6 +13,12 @@ module Api
         render :show
       end
 
+      def destroy
+        User.includes(roles: [:role_permissions]).find_by!(external_id: params[:id]).destroy!
+
+        head :ok
+      end
+
       private
 
       def user

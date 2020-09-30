@@ -14,6 +14,8 @@
 #  index_roles_on_user_id      (user_id)
 #
 class Role < ApplicationRecord
+  NAMES = %w[admin viewer].freeze
+
   belongs_to :user
   belongs_to :resource
 
