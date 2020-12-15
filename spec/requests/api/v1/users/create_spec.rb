@@ -1,21 +1,20 @@
 describe 'POST api/v1/users/', type: :request do
-  let(:user)           { create(:user, resources: []) }
-  let!(:user_resource) { create(:resource, :user) }
-  let(:headers)        { auth_headers }
-  let(:external_id)    { user.external_id + 1 }
-  let(:params)         do
+  let!(:account)    { create(:account) }
+  let!(:user)       { create(:user, account: account) }
+  let!(:role)       { create(:role, account: account) }
+  let!(:role2)      { create(:role, account: account) }
+  let!(:role3)      { create(:role, account: account) }
+  let(:headers)     { auth_headers }
+  let(:external_id) { user.external_id + 1 }
+  let(:params) do
     {
       user: {
         external_id: external_id
       }
     }
   end
-  let!(:admin_user_role) { create(:role, :admin, resource: user_resource, user: user) }
+
   subject { post api_v1_users_path, params: params, headers: headers, as: :json }
-  before do
-    Permission.access_types.keys.each { |key| Permission.find_or_create_by(access_type: key) }
-    user.reload
-  end
 
   describe 'with repeated external_id' do
     let!(:external_id) { user.external_id }
@@ -52,11 +51,7 @@ describe 'POST api/v1/users/', type: :request do
         {
           user: {
             external_id: external_id,
-            roles: [
-              resource_id: '1',
-              resource_type: 'Form',
-              name: 'admin'
-            ]
+            roles: [{ name: role.name }, { name: role2.name }]
           }
         }
       end
@@ -65,25 +60,22 @@ describe 'POST api/v1/users/', type: :request do
         expect { subject }.to change { User.count }.from(1).to(2)
       end
 
-      it 'assigns the form to the new user' do
+      it 'assigns the roles to the user' do
         subject
-        new_user = User.find_by(external_id: external_id)
-        added_resource = new_user.roles.last.resource
-        expect([added_resource.resource_id, added_resource.resource_type]).to eq([1, 'Form'])
+        new_user = account.users.where(external_id: external_id).first
+        expect(new_user.roles.count).to eq(2)
       end
 
-      it 'has only one role' do
+      it 'doesnt assign the wrong role to the user' do
         subject
-        new_user = User.find_by(external_id: external_id)
-        expect(new_user.roles.count).to eq(1)
+        new_user = account.users.where(external_id: external_id).first
+        expect(new_user.roles.where(name: role3.name)).to be_empty
       end
 
-      it 'creates a role with the admin permissions' do
+      it 'doesnt assigns the right role to the user' do
         subject
-        new_user = User.find_by(external_id: external_id)
-        created_role = new_user.roles.last
-        expect(created_role.permissions.pluck(:access_type).sort).to eq(Permission.access_types
-          .keys.sort)
+        new_user = account.users.where(external_id: external_id).first
+        expect(new_user.roles.where(name: role2.name)).not_to be_empty
       end
     end
   end

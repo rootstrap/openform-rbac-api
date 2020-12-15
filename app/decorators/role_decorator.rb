@@ -2,6 +2,6 @@ class RoleDecorator < ApplicationDecorator
   delegate_all
 
   def permissions_string
-    permissions.map(&:access_type).join(',')
+    permissions.map(&:to_s).join(',')
   end
 end

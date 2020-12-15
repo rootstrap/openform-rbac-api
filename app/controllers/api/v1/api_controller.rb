@@ -23,12 +23,17 @@ module Api
 
       private
 
+      def pundit_user
+        current_account
+      end
+
+      def current_account
+        @current_account = api_key.present? ? Account.find_by(api_key: api_key) : nil
+      end
+
       def current_user
-        @current_user ||= if user_id.present?
-                            User.find_by(external_id: user_id)
-                          elsif api_key.present?
-                            AdminUser.find_by(api_key: api_key)
-                          end
+        user_id = request.headers[:userId]
+        @current_user = user_id.present? ? User.find_by(external_id: user_id) : nil
       end
 
       def user_id

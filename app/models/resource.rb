@@ -7,23 +7,23 @@
 #  resource_type :string           not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  account_id    :bigint
 #
 # Indexes
 #
-#  index_resources_on_resource_id_and_resource_type  (resource_id,resource_type) UNIQUE
+#  index_resources_on_account_id                                    (account_id)
+#  index_resources_on_account_id_and_resource_id_and_resource_type
+#  (account_id,resource_id,resource_type) UNIQUE
 #
 class Resource < ApplicationRecord
-  has_many :roles, dependent: :destroy
-  has_many :users, through: :roles
+  belongs_to :account
+  has_many :role_permissions, dependent: :destroy
+  has_many :roles, through: :role_permissions
 
-  validates :resource_type, presence: true,
-                            uniqueness: { scope: :resource_id, case_sensitive: false }
-
-  scope :matching, lambda { |params|
-                     where(resource_type: params[:resource_type])
-                       .where(resource_id: [nil, params[:resource_id]])
-                       .order(resource_id: :asc)
-                   }
+  validates :account_id, presence: true
+  validates :resource_type, presence: true
+  validates :resource_id, presence: true
+  validates :resource_id, uniqueness: { scope: %i[account_id resource_type] }
 
   def to_s
     return resource_type.pluralize if resource_id.nil?
