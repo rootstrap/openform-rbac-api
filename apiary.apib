@@ -1,227 +1,118 @@
 FORMAT: 1A
-HOST: http://rails5-api-base.herokuapp.com
+HOST: http://rs-rbac.herokuapp.com
 
-# API BASE
+# Rootstrap RBAC 
 
-Rails Api Base is a boilerplate project for JSON RESTful APIs. It follows the community best practices in terms of standards, security and maintainability, integrating a variety of testing and code quality tools.
+Role-based access control for Rootstrap projects.
 
-## Users Collection [/api/v1/users]
+RBAC restricts access based on a person's role within an organization 
+and has become one of the main methods for advanced access control. 
 
-### Sign Up [POST]
+The roles in RBAC refer to the levels of access that users
+have in a platform..
 
-+ Request (application/json)
-    + Attributes
-      + user (Profile Edition, required)
+## Users [/api/v1/users]
 
-
-+ Response 200 (application/json)
-    + Headers
-
-            access-token: sO2bm_Bpdyoo8r78jZ-fqg
-            client: QADgNCWRJj0LyRruqzYbBg
-            expiry: 1489009792
-            uid: test@test.com
-
-
-    + Attributes
-      + user (Profile Response, required)
-
-+ Response 401
-
-
-## Current user's profile [/api/v1/user/profile]
-
-### Get current user profile [GET]
+### Create User [POST]
 
 + Request (application/json)
     + Headers
+    
+            userId: 12
+            api-key: QADgNCWRJj0LyRruqzYbBg
+    + Attributes
+        + user (User External, required)
 
-            access-token: sO2bm_Bpdyoo8r78jZ-fqg
-            client: QADgNCWRJj0LyRruqzYbBg
-            uid: test@test.com
-
-
+        
 + Response 200 (application/json)
+    
++ Response 400
+    + Attributes
+        + errors (array[string])
+            
+
+### Update user  [PUT]
+
++ Request (application/json)
     + Headers
-
-            access-token: sO2bm_Bpdyoo8r78jZ-fqg
-            client: QADgNCWRJj0LyRruqzYbBg
-            expiry: 1489009792
-            uid: test@test.com
-
+    
+            userId: 12
+            api-key: QADgNCWRJj0LyRruqzYbBg
 
     + Attributes
-      + user (Profile Response, required)
+      + user (User Roles, required)
 
++ Response 200 (application/json)
 
-+ Response 401
-
-
-### Update current user profile [PUT]
+### Delete User [DELETE]
 
 + Request (application/json)
     + Headers
+    
+            userId: 12
+            api-key: QADgNCWRJj0LyRruqzYbBg
 
-            access-token: sO2bm_Bpdyoo8r78jZ-fqg
-            client: QADgNCWRJj0LyRruqzYbBg
-            uid: test@test.com
++ Response 200 (application/json)
 
+## Roles [/api/v1/users/users/roles]
+### Get user's roles  [GET]
+
++ Request (application/json)
+    + Headers
+    
+            userId: 12
+            api-key: QADgNCWRJj0LyRruqzYbBg
+
++ Response 200 (application/json)
+    + Attributes 
+        + roles: (array[Role Base])
+
+
+## Resources [/api/v1/users/resources]
+
+### Create Resource [POST]
+
++ Request (application/json)
+    + Headers
+    
+            userId: 12
+            api-key: QADgNCWRJj0LyRruqzYbBg
     + Attributes
-      + user (Profile Edition, required)
-
+        + resource (Resource Base, required)
+        
 + Response 200 (application/json)
-    + Headers
-
-            access-token: sO2bm_Bpdyoo8r78jZ-fqg
-            client: QADgNCWRJj0LyRruqzYbBg
-            expiry: 1489009792
-            uid: test@test.com
-
-
+    
++ Response 400
     + Attributes
-      + user (Profile Response, required)
+        + errors (array[string])
+            
 
-## Get current user info [/api/v1/user]
-
-### Get user [GET]
+### Get user's resources  [GET]
 
 + Request (application/json)
     + Headers
-
-            access-token: sO2bm_Bpdyoo8r78jZ-fqg
-            client: QADgNCWRJj0LyRruqzYbBg
-            uid: test@test.com
-
-
+    
+            userId: 12
+            api-key: QADgNCWRJj0LyRruqzYbBg
 
 + Response 200 (application/json)
+    + Attributes 
+        + resources: (array[Resource Base])
+
+
+### Delete Resource [DELETE]
+
++ Request (application/json)
     + Headers
-
-            access-token: sO2bm_Bpdyoo8r78jZ-fqg
-            client: QADgNCWRJj0LyRruqzYbBg
-            expiry: 1489009792
-            uid: test@test.com
-
-
+    
+            userId: 12
+            api-key: QADgNCWRJj0LyRruqzYbBg
+    
     + Attributes
-      + user (User, required)
-
-+ Response 401
-
-
-## Login [/api/v1/users/sign_in]
-
-### Login [POST]
-
-+ Request (application/json)
-
-    + Body
-
-            {
-              "user":
-                {
-                  "email": "test@gmail.com",
-                  "password": "password"
-                }
-            }
-
-
-+ Response 200 (application/json)
-    + Headers
-
-            access-token: sO2bm_Bpdyoo8r78jZ-fqg
-            client: QADgNCWRJj0LyRruqzYbBg
-            expiry: 1489009792
-            uid: test@test.com
-
-
-    + Attributes
-      + user (Profile Response, required)
-
-+ Response 401
-
-## Logout [/api/v1/users/sign_out]
-
-### Logout [DELETE]
-
-+ Request (application/json)
-    + Headers
-
-            access-token: sO2bm_Bpdyoo8r78jZ-fqg
-            client: QADgNCWRJj0LyRruqzYbBg
-            expiry: 1489009792
-            uid: test@test.com
-
+        + resource (Resource Base, required) 
+        
 + Response 200 (application/json)
 
-
-## Reset password [/api/v1/users/password]
-
-More information of how reset password works: https://github.com/lynndylanhurley/devise_token_auth/wiki/Reset-Password-Flow
-
-### Reset password [POST]
-
-Use this route to send a password reset confirmation email
-
-+ Request (application/json)
-    + Body
-
-            {
-              "email": "test@test.com",
-              "redirect_url": "http://www.example.com"
-            }
-
-+ Response 200 (application/json)
-    + Body
-
-            {
-              "success": true,
-              "message": "An email has been sent to 'example@mail.com' containing instructions for resetting your password."
-            }
-
-### Reset password [PUT]
-
-Use this route to change user's passwords
-
-+ Request (application/json)
-    + Parameters
-        + reset_password_token (string, required)
-
-    + Body
-
-            {
-              "password": "12345678",
-              "password_confirmation": "12345678"
-            }
-
-+ Response 200 (application/json)
-    + Headers
-
-            access-token: sO2bm_Bpdyoo8r78jZ-fqg
-            client: QADgNCWRJj0LyRruqzYbBg
-            expiry: 1489009792
-            uid: test@test.com
-
-    + Attributes (Profile Response)
-
-## Edit reset password [/api/v1/users/password/edit]
-
-### Edit reset password [GET]
-
-This route is the destination URL for password reset confirmation
-
-+ Request (application/json)
-    + Parameters
-        + reset_password_token (string, required)
-        + redirect_url (string)
-
-+ Response 200 (application/json)
-    + Headers
-
-            access-token: sO2bm_Bpdyoo8r78jZ-fqg
-            client: QADgNCWRJj0LyRruqzYbBg
-            expiry: 1489009792
-            uid: test@test.com
 
 # Data Structures
 
@@ -235,12 +126,19 @@ This route is the destination URL for password reset confirmation
 + username: jdoe (string)
 + created_at: 2017-02-23T13:54:33.283Z (string)
 
-## Profile Edition (object)
-+ email: test@test.com (string)
-+ password: 12345678 (string)
-+ first_name: John (string)
-+ last_name: Doe (string)
-+ username: jdoe (string)
+## User External (object)
++ external_id: 12 (number)
+
+## Resource Base (object)
++ resource_id: 1 (number)
++ resource_type: form (string)
+
+## Role Base (object)
++ resource: (Resource Base)
++ name: Hiring (string)
+
+## User Roles (object)
++ roles: (array[Role Base])
 
 ## User (object)
 + email: test@test.com (string)
