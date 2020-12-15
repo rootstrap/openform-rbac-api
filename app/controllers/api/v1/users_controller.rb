@@ -4,17 +4,18 @@ module Api
       helper_method :user
 
       def create
-        @user = UserService.new.create!(permitted_attributes(User))
+        @user = UserService.new.create!(current_account, permitted_attributes(User))
         render :show
       end
 
       def update
-        UserService.new(user).update!(permitted_attributes(user))
+        @user = UserService.new.update!(user, permitted_attributes(User))
         render :show
       end
 
       def destroy
-        User.includes(roles: [:role_permissions]).find_by!(external_id: params[:id]).destroy!
+        user
+        @user&.destroy!
 
         head :ok
       end
@@ -22,7 +23,7 @@ module Api
       private
 
       def user
-        @user ||= User.find_by!(external_id: params[:id])
+        @user ||= User.where(external_id: params[:id], account: current_account).first
       end
     end
   end

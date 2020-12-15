@@ -7,6 +7,6 @@ module Helpers
   end
 
   def auth_headers
-    { userId: user.external_id }
+    { userId: user.external_id, apiKey: account.api_key }
   end
 end
