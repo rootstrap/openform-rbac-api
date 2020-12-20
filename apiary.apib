@@ -1,15 +1,53 @@
 FORMAT: 1A
 HOST: http://rs-rbac.herokuapp.com
 
-# Rootstrap RBAC 
+# Rootstrap RBAC+ 
 
 Role-based access control for Rootstrap projects.
 
-RBAC restricts access based on a person's role within an organization 
+RBAC+ restricts access based on a person's role within an organization 
 and has become one of the main methods for advanced access control. 
 
 The roles in RBAC refer to the levels of access that users
-have in a platform..
+have in a platform.
+
+The "+" stands for positive RBAC. We give access to specified resources,
+but no access is denied explicitly. 
+
+## Roles [/api/v1/roles]
+
+### Create Role [POST]
+
++ Request (application/json)
+    + Headers
+    
+            userId: 12
+            api-key: uhduye7385n3bvx73hn31k8
+    + Attributes
+        + role (Role Base, required)
+
+        
++ Response 200 (application/json)
+    + Attributes
+        + role (Role Base, required)
+    
++ Response 400
+    + Attributes
+        + errors (array[string])
+            
+
+## Role [/api/v1/roles/{role_id}]
+
+### Delete Role [DELETE]
+
++ Request (application/json)
+    + Headers
+    
+            userId: 12
+            api-key: uhduye7385n3bvx73hn31k8
+
++ Response 200 (application/json)
+
 
 ## Users [/api/v1/users]
 
@@ -19,12 +57,14 @@ have in a platform..
     + Headers
     
             userId: 12
-            api-key: QADgNCWRJj0LyRruqzYbBg
+            api-key: uhduye7385n3bvx73hn31k8
     + Attributes
-        + user (User External, required)
+        + user (User, required)
 
         
 + Response 200 (application/json)
+    + Attributes
+        + user (User, required)
     
 + Response 400
     + Attributes
@@ -37,7 +77,7 @@ have in a platform..
     + Headers
     
             userId: 12
-            api-key: QADgNCWRJj0LyRruqzYbBg
+            api-key: uhduye7385n3bvx73hn31k8
 
     + Attributes
       + user (User Roles, required)
@@ -50,22 +90,26 @@ have in a platform..
     + Headers
     
             userId: 12
-            api-key: QADgNCWRJj0LyRruqzYbBg
+            api-key: uhduye7385n3bvx73hn31k8
 
 + Response 200 (application/json)
 
-## Roles [/api/v1/users/users/roles]
+## User Roles [/api/v1/users/{user_id}/roles]
 ### Get user's roles  [GET]
 
 + Request (application/json)
     + Headers
     
             userId: 12
-            api-key: QADgNCWRJj0LyRruqzYbBg
+            api-key: uhduye7385n3bvx73hn31k8
 
 + Response 200 (application/json)
+
     + Attributes 
-        + roles: (array[Role Base])
+        + roles (array[Role Base])
+
+
+
 
 
 ## Resources [/api/v1/users/resources]
@@ -76,7 +120,8 @@ have in a platform..
     + Headers
     
             userId: 12
-            api-key: QADgNCWRJj0LyRruqzYbBg
+            api-key: uhduye7385n3bvx73hn31k8
+            
     + Attributes
         + resource (Resource Base, required)
         
@@ -93,11 +138,12 @@ have in a platform..
     + Headers
     
             userId: 12
-            api-key: QADgNCWRJj0LyRruqzYbBg
+            api-key: uhduye7385n3bvx73hn31k8
 
 + Response 200 (application/json)
     + Attributes 
-        + resources: (array[Resource Base])
+        + resources (array[Resource Base])
+
 
 
 ### Delete Resource [DELETE]
@@ -106,7 +152,7 @@ have in a platform..
     + Headers
     
             userId: 12
-            api-key: QADgNCWRJj0LyRruqzYbBg
+            api-key: uhduye7385n3bvx73hn31k8
     
     + Attributes
         + resource (Resource Base, required) 
@@ -116,32 +162,27 @@ have in a platform..
 
 # Data Structures
 
-## Profile Response (object)
-+ id: 100 (number)
-+ email: test@test.com (string)
-+ provider: email, facebook, twitter (enum[string]) - it's way the user logins
-+ uid: test@test.com (string) - the provider identifier
-+ first_name: John (string)
-+ last_name: Doe (string)
-+ username: jdoe (string)
-+ created_at: 2017-02-23T13:54:33.283Z (string)
+## Account (object)
++ api_key: uhduye7385n3bvx73hn31k8 (string)
 
-## User External (object)
+## User (object)
 + external_id: 12 (number)
+
+## Permission (object)
++ access_type: 1 (number)
++ resource (Resource Base)
+
+## Role Permission (object)
++ resource (Resource Base)
++ role (Role Base)
 
 ## Resource Base (object)
 + resource_id: 1 (number)
 + resource_type: form (string)
 
 ## Role Base (object)
-+ resource: (Resource Base)
 + name: Hiring (string)
++ permissions_string (string)
 
 ## User Roles (object)
-+ roles: (array[Role Base])
-
-## User (object)
-+ email: test@test.com (string)
-+ first_name: John (string)
-+ last_name: Doe (string)
-+ username: jdoe (string)
++ roles (array[Role Base])
