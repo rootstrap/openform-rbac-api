@@ -14,9 +14,11 @@ have in a platform.
 The "+" stands for positive RBAC. We give access to specified resources,
 but no access is denied explicitly. 
 
-## Roles [/api/v1/roles]
+# Group Roles
 
-### Create Role [POST]
+# Collection [/api/v1/roles]
+
+## Create a new Role [POST]
 
 + Request (application/json)
     + Headers
@@ -36,9 +38,9 @@ but no access is denied explicitly.
         + errors (array[string])
             
 
-## Role [/api/v1/roles/{role_id}]
+# Object [/api/v1/roles/{role_id}]
 
-### Delete Role [DELETE]
+## Delete [DELETE]
 
 + Request (application/json)
     + Headers
@@ -48,10 +50,24 @@ but no access is denied explicitly.
 
 + Response 200 (application/json)
 
+## Get Permissions  [GET /permissions]
 
-## Users [/api/v1/users]
++ Request (application/json)
+    + Headers
+    
+            userId: 12
+            api-key: uhduye7385n3bvx73hn31k8
 
-### Create User [POST]
++ Response 200 (application/json)
+
+    + Attributes 
+        + permissions (array[Permission])
+
+# Group Users
+
+# Collection [/api/v1/users]
+
+## Create a new User [POST]
 
 + Request (application/json)
     + Headers
@@ -71,7 +87,9 @@ but no access is denied explicitly.
         + errors (array[string])
             
 
-### Update user  [PUT]
+# Object [/api/v1/users/{user_id}]
+
+## Update [PUT]
 
 + Request (application/json)
     + Headers
@@ -84,7 +102,7 @@ but no access is denied explicitly.
 
 + Response 200 (application/json)
 
-### Delete User [DELETE]
+## Delete [DELETE]
 
 + Request (application/json)
     + Headers
@@ -94,9 +112,7 @@ but no access is denied explicitly.
 
 + Response 200 (application/json)
 
-## User Roles [/api/v1/users/{user_id}/roles]
-### Get user's roles  [GET]
-
+## Get Roles  [GET /roles]
 + Request (application/json)
     + Headers
     
@@ -109,30 +125,7 @@ but no access is denied explicitly.
         + roles (array[Role Base])
 
 
-
-
-
-## Resources [/api/v1/users/resources]
-
-### Create Resource [POST]
-
-+ Request (application/json)
-    + Headers
-    
-            userId: 12
-            api-key: uhduye7385n3bvx73hn31k8
-            
-    + Attributes
-        + resource (Resource Base, required)
-        
-+ Response 200 (application/json)
-    
-+ Response 400
-    + Attributes
-        + errors (array[string])
-            
-
-### Get user's resources  [GET]
+## Get Permissions  [GET /permissions]
 
 + Request (application/json)
     + Headers
@@ -141,23 +134,26 @@ but no access is denied explicitly.
             api-key: uhduye7385n3bvx73hn31k8
 
 + Response 200 (application/json)
+
     + Attributes 
-        + resources (array[Resource Base])
+        + permissions (array[Permission])
 
+# Group Permissions
+# Collection [/api/v1/permissions]
+## List permissions of Account (admin access only) [GET]
 
-
-### Delete Resource [DELETE]
 
 + Request (application/json)
     + Headers
     
             userId: 12
             api-key: uhduye7385n3bvx73hn31k8
-    
-    + Attributes
-        + resource (Resource Base, required) 
-        
+            
 + Response 200 (application/json)
+
+    + Attributes 
+        + permissions (array[Permission])
+
 
 
 # Data Structures
