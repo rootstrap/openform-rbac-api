@@ -62,6 +62,31 @@ but no access is denied explicitly.
 
     + Attributes 
         + permissions (array[Permission])
+        
+
+## Assign Permissions [POST /assign?permission_ids={permission_ids}]
++ Request (application/json)
+    + Headers
+    
+            userId: 12
+            api-key: uhduye7385n3bvx73hn31k8
+            
+    + Parameters
+        + permission_ids (string) - Array of permissions IDs to assign. Example: [1, 5, 32]
+            
++ Response 200 (application/json)
+
+## Unssign Permissions [POST /unassign?permission_ids={permission_ids}]
++ Request (application/json)
+    + Headers
+    
+            userId: 12
+            api-key: uhduye7385n3bvx73hn31k8
+    
+    + Parameters
+        + permission_ids (string) - Array of permissions IDs to assign. Example: [1, 5, 32]
+            
++ Response 200 (application/json)
 
 # Group Users
 
@@ -140,6 +165,21 @@ but no access is denied explicitly.
 
 # Group Permissions
 # Collection [/api/v1/permissions]
+
+## Create [POST]
+
+
++ Request (application/json)
+    + Headers
+    
+            userId: 12
+            api-key: uhduye7385n3bvx73hn31k8
+            
++ Response 200 (application/json)
+
+    + Attributes
+        + permission (Permission, required)
+        
 ## List permissions of Account (admin access only) [GET]
 
 
@@ -153,8 +193,6 @@ but no access is denied explicitly.
 
     + Attributes 
         + permissions (array[Permission])
-
-
 
 # Data Structures
 
