@@ -1,30 +1,24 @@
-# Rails API Template
+# Rootstrap RBAC+
 
 [![CircleCI](https://circleci.com/gh/rootstrap/rails_api_base.svg?style=svg)](https://circleci.com/gh/rootstrap/rails_api_base)
 [![Code Climate](https://codeclimate.com/github/rootstrap/rails_api_base/badges/gpa.svg)](https://codeclimate.com/github/rootstrap/rails_api_base)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/63de7f82c79f5fe82f46/test_coverage)](https://codeclimate.com/github/rootstrap/rails_api_base/test_coverage)
 
-Rails Api Base is a boilerplate project for JSON RESTful APIs. It follows the community best practices in terms of standards, security and maintainability, integrating a variety of testing and code quality tools. It's based on Rails 6 and Ruby 2.6.
+Role-based access control for Rootstrap projects.
+
+RBAC+ restricts access based on a person's role within an organization 
+and has become one of the main methods for advanced access control. 
+
+The roles in RBAC refer to the levels of access that users
+have in a platform.
+
+The "+" stands for positive RBAC. We give access to specified resources,
+but no access is denied explicitly. 
 
 Finally, it contains a plug an play Administration console (thanks to [ActiveAdmin](https://github.com/activeadmin/activeadmin)).
 
-## Features
+![Domain](public/domain.jpg "Domain")
 
-This template comes with:
-- Schema
-  - Users table
-  - Admin users table
-- Endpoints
-  - Sign up with user credentials
-  - Sign in with user credentials
-  - Sign out
-  - Reset password
-  - Get and update user profile
-- Administration panel for users
-- Rspec tests
-- Code quality tools
-- API documentation following https://apiblueprint.org/
-- Docker support
 
 ## How to use
 
@@ -40,51 +34,10 @@ This template comes with:
 
 ## How to use with docker
 
-1. Have docker and docker-compose installed
-2. build and run the application with `docker-compose up`
-3. Run `docker-compose exec web bash -c "rails db:create db:migrate"`
-4. You can now try your REST services!
-
-## Gems
-
-- [ActiveAdmin](https://github.com/activeadmin/activeadmin) for easy administration
-- [Annotate](https://github.com/ctran/annotate_models) for doc the schema in the classes
-- [Better Errors](https://github.com/charliesome/better_errors) for a better error page
-- [Brakeman](https://github.com/presidentbeef/brakeman) for static analysis security
-- [Bullet](https://github.com/flyerhzm/bullet) help to kill N+1
-- [Byebug](https://github.com/deivid-rodriguez/byebug) for debugging
-- [DelayedJob](https://github.com/collectiveidea/delayed_job) for background processing
-- [Devise](https://github.com/plataformatec/devise) for basic auth
-- [Devise Token Auth](https://github.com/lynndylanhurley/devise_token_auth) for api auth
-- [Draper](https://github.com/drapergem/draper) for decorators
-- [Factory Bot](https://github.com/thoughtbot/factory_bot) for testing data
-- [Faker](https://github.com/stympy/faker) for generating test data
-- [Figaro](https://github.com/laserlemon/figaro) for handling environment variables
-- [Haml](https://github.com/haml/haml) for the template engine
-- [Jbuilder](https://github.com/rails/jbuilder) for json views
-- [Letter Opener](https://github.com/ryanb/letter_opener) for previewing a mail in the browser
-- [Oj](https://github.com/ohler55/oj) for optimized json
-- [Pry](https://github.com/pry/pry) for enhancing the ruby shell
-- [Puma](https://github.com/puma/puma) for the server
-- [Rack CORS](https://github.com/cyu/rack-cors) for handling CORS
-- [Rails Best Practices](https://github.com/flyerhzm/rails_best_practices) for rails linting
-- [Reek](https://github.com/troessner/reek) for ruby linting
-- [RSpec](https://github.com/rspec/rspec) for testing
-- [Rubocop](https://github.com/bbatsov/rubocop/) for ruby linting
-- [Sendgrid](https://github.com/stephenb/sendgrid) for sending mails
-- [Shoulda Matchers](https://github.com/thoughtbot/shoulda-matchers) adds other testing matchers
-- [Simplecov](https://github.com/colszowka/simplecov) for code coverage
-- [Webmock](https://github.com/bblimke/webmock) for stubbing http requests
-
-## Optional configuration
-
-- Set your [frontend URL](https://github.com/cyu/rack-cors#origin) in `config/initializers/rack_cors.rb`
-- Set your mail sender in `config/initializers/devise.rb`
-- Config your timezone accordingly in `application.rb`.
 
 ## Api Docs
 
-http://docs.railsapibase.apiary.io
+https://rsrbac.docs.apiary.io/
 
 ## Code quality
 

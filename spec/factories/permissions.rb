@@ -6,14 +6,16 @@
 #  access_type :integer          not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  resource_id :bigint
 #
 # Indexes
 #
-#  index_permissions_on_access_type  (access_type) UNIQUE
+#  index_permissions_on_access_type_and_resource_id  (access_type,resource_id) UNIQUE
+#  index_permissions_on_resource_id                  (resource_id)
 #
 FactoryBot.define do
   factory :permission do
+    resource
     access_type { Permission.access_types.values.sample }
-    initialize_with { Permission.find_or_initialize_by(access_type: access_type) }
   end
 end

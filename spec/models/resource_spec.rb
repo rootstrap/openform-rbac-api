@@ -7,10 +7,13 @@
 #  resource_type :string           not null
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  account_id    :bigint
 #
 # Indexes
 #
-#  index_resources_on_resource_id_and_resource_type  (resource_id,resource_type) UNIQUE
+#  index_resources_on_account_id                                    (account_id)
+#  index_resources_on_account_id_and_resource_id_and_resource_type
+#  (account_id,resource_id,resource_type) UNIQUE
 #
 require 'rails_helper'
 
@@ -20,10 +23,6 @@ RSpec.describe Resource, type: :model do
   describe 'validations' do
     it { is_expected.to validate_presence_of(:resource_type) }
     it { is_expected.to validate_presence_of(:resource_type) }
-    it do
-      is_expected.to validate_uniqueness_of(:resource_type)
-        .scoped_to(:resource_id)
-        .case_insensitive
-    end
+    it { is_expected.to validate_presence_of(:account_id) }
   end
 end

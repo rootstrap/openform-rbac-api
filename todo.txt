@@ -1,0 +1,41 @@
+Review Users:  
+	+ UsersControllers
+	+ Test Controller
+	+ Apiary
+
+
++ Role Decorator
+
+Review Roles:
+	+ Roles Controllers
+	+ Test Controller
+	+ Apiary
+
++ Roles for user 
++ Assignment (fix create user, test create user)
++ Test UserService
++ Updaet User roles
++ Check double assignment
++ Go back to user update
++ User with roles
++ Test Assignment Service
+
+- Apiary
+- Check if user accountis admin on roles index
+- Resources
+
+habit creation?
+audience?
+fitness or health?
+
+trainerize
+
+programs
+
+
+rev share
+
+interest starts to fade
+motivator vs shy
+follow through vs restart
+audience of authors

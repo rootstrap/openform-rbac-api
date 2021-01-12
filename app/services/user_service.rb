@@ -1,27 +1,34 @@
 class UserService
   attr_accessor :user
+  attr_accessor :account
 
-  def initialize(user = User.new)
+  def initialize(user = User.new, account = nil)
     @user = user
+    @account = account
   end
 
-  def create!(user_params)
+  def create!(account, user_params)
     ActiveRecord::Base.transaction do
+      @account = account
       user.assign_attributes(user_params.except(:roles))
+      user.account = account
       user.save!
       roles = user_params[:roles]
-      create_roles!(roles) if roles
+      assign_roles!(roles) unless roles.nil?
+
       user
     end
   end
 
-  def update!(user_params)
+  def update!(user, user_params)
     ActiveRecord::Base.transaction do
+      @user = user
+      @account = user.account
       user.update!(user_params.except(:roles))
       roles = user_params[:roles]
-      if roles
-        destroy_roles!
-        create_roles!(roles)
+      unless roles.nil?
+        clean_roles!
+        assign_roles!(roles)
       end
       user
     end
@@ -29,30 +36,19 @@ class UserService
 
   private
 
-  def permissions(role_name)
-    Permission.send(role_name.to_sym)
-  end
-
-  def validate_role_name!(role_name)
-    return if Role::NAMES.include?(role_name)
-
-    user.errors.add(:roles, I18n.t('api.errors.invalid_role_name'))
-    raise ActiveRecord::RecordInvalid, user
-  end
-
-  def destroy_roles!
-    user.roles.destroy_all
-  end
-
-  def create_roles!(roles_hash)
+  def assign_roles!(roles_hash)
     roles_hash.each do |role|
       role_name = role[:name]
-      validate_role_name!(role_name)
-      params = {
-        resource_id: ResourceService.new(role[:resource_type], role[:resource_id]).resource.id,
-        permissions: permissions(role_name)
-      }
-      user.roles.create!(params)
+      role = @account.roles.where(name: role_name).first
+      AssignmentService.new.create!(role, user) unless role.nil?
     end
+  end
+
+  def clean_roles!
+    Assignment.where(user: user).destroy_all
+  end
+
+  def permissions(role_name)
+    Permission.send(role_name.to_sym)
   end
 end
