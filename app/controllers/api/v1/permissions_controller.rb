@@ -11,24 +11,19 @@ module Api
         @permissions = permission_for_roles(roles).to_a
       end
 
-      # def assign
-      # end
-
       private
 
       def roles
         role_id = params[:role_id]
         user_id = params[:user_id]
 
-        return_value = if role_id
-                         fetch_account(role_id)
-                       elsif user_id
-                         fetch_user(user_id)
-                       elsif admin_current?
-                         current_account.roles
-                       end
-
-        return_value
+        if role_id
+          fetch_account(role_id)
+        elsif user_id
+          fetch_user(user_id)
+        elsif admin_current?
+          current_account.roles
+        end
       end
 
       def fetch_account(role_id)
@@ -40,11 +35,10 @@ module Api
       end
 
       def permission_for_roles(roles)
-        permissions = RolePermission.where(role: roles)
-                                    .includes(permission: :resource)
-                                    .collect(&:permission)
-                                    .uniq
-        permissions
+        RolePermission.where(role: roles)
+                      .includes(permission: :resource)
+                      .collect(&:permission)
+                      .uniq
       end
 
       def admin_current?

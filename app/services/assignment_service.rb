@@ -1,6 +1,5 @@
 class AssignmentService
-  attr_accessor :role
-  attr_accessor :user
+  attr_accessor :role, :user
 
   def initialize(role = Role.new, user = User.new)
     @role = role

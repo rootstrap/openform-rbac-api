@@ -14,8 +14,7 @@ module Api
       end
 
       def destroy
-        user
-        @user&.destroy!
+        user&.destroy!
 
         head :ok
       end
