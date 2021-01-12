@@ -56,22 +56,20 @@ describe 'GET api/v1/permissions', type: :request do
       end
 
       it 'returns the permissions assigned to both roles' do
-        expected = {
-          permissions: [
-            {
-              access_type: permission.access_type,
-              resource: { resource_id: resource.resource_id,
-                          resource_type: resource.resource_type }
-            },
-            {
-              access_type: permission2.access_type,
-              resource: { resource_id: resource2.resource_id,
-                          resource_type: resource2.resource_type }
-            }
-          ]
-        }
+        expected = [
+          {
+            access_type: permission.access_type,
+            resource: { resource_id: resource.resource_id,
+                        resource_type: resource.resource_type }
+          },
+          {
+            access_type: permission2.access_type,
+            resource: { resource_id: resource2.resource_id,
+                        resource_type: resource2.resource_type }
+          }
+        ]
         subject
-        expect(json).to include_json(expected)
+        expect(json[:permissions]).to match_unordered_json(expected)
       end
     end
   end
