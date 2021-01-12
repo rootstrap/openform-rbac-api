@@ -5,7 +5,7 @@ jobs:
       # You must replace the CC_TEST_REPORTER_ID with the one of your project
       CC_TEST_REPORTER_ID: 449ea4806e88fe29c9fb6c955a7e8a80aa51d35a82bdf48e00f5347dcaf2271d
     docker:
-      - image: circleci/ruby:2.6.3-node-browsers
+      - image: circleci/ruby:2.7.2-node
       - image: circleci/postgres:9.4
         environment:
           POSTGRES_USER: 'postgres'
